@@ -3,31 +3,31 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 using CORE.APP.Features;
-using APP.Users.Features.Skills;
+using APP.Users.Features.UserSkills;
 
 //Generated from Custom Template.
 namespace API.Users.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SkillsController : ControllerBase
+    public class UserSkillsController : ControllerBase
     {
-        private readonly ILogger<SkillsController> _logger;
+        private readonly ILogger<UserSkillsController> _logger;
         private readonly IMediator _mediator;
 
-        public SkillsController(ILogger<SkillsController> logger, IMediator mediator)
+        public UserSkillsController(ILogger<UserSkillsController> logger, IMediator mediator)
         {
             _logger = logger;
             _mediator = mediator;
         }
 
-        // GET: api/Skills
+        // GET: api/UserSkills
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             try
             {
-                var response = await _mediator.Send(new SkillQueryRequest());
+                var response = await _mediator.Send(new UserSkillQueryRequest());
                 var list = await response.ToListAsync();
                 if (list.Any())
                     return Ok(list);
@@ -35,18 +35,18 @@ namespace API.Users.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError("SkillsGet Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during SkillsGet.")); 
+                _logger.LogError("UserSkillsGet Exception: " + exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UserSkillsGet.")); 
             }
         }
 
-        // GET: api/Skills/5
+        // GET: api/UserSkills/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var response = await _mediator.Send(new SkillQueryRequest());
+                var response = await _mediator.Send(new UserSkillQueryRequest());
                 var item = await response.SingleOrDefaultAsync(r => r.Id == id);
                 if (item is not null)
                     return Ok(item);
@@ -54,14 +54,14 @@ namespace API.Users.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError("SkillsGetById Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during SkillsGetById.")); 
+                _logger.LogError("UserSkillsGetById Exception: " + exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UserSkillsGetById.")); 
             }
         }
 
-		// POST: api/Skills
+		// POST: api/UserSkills
         [HttpPost]
-        public async Task<IActionResult> Post(SkillCreateRequest request)
+        public async Task<IActionResult> Post(UserSkillCreateRequest request)
         {
             try
             {
@@ -73,20 +73,20 @@ namespace API.Users.Controllers
                         //return CreatedAtAction(nameof(Get), new { id = response.Id }, response);
                         return Ok(response);
                     }
-                    ModelState.AddModelError("SkillsPost", response.Message);
+                    ModelState.AddModelError("UserSkillsPost", response.Message);
                 }
                 return BadRequest(new CommandResponse(false, string.Join("|", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))));
             }
             catch (Exception exception)
             {
-                _logger.LogError("SkillsPost Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during SkillsPost.")); 
+                _logger.LogError("UserSkillsPost Exception: " + exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UserSkillsPost.")); 
             }
         }
 
-        // PUT: api/Skills
+        // PUT: api/UserSkills
         [HttpPut]
-        public async Task<IActionResult> Put(SkillUpdateRequest request)
+        public async Task<IActionResult> Put(UserSkillUpdateRequest request)
         {
             try
             {
@@ -98,36 +98,36 @@ namespace API.Users.Controllers
                         //return NoContent();
                         return Ok(response);
                     }
-                    ModelState.AddModelError("SkillsPut", response.Message);
+                    ModelState.AddModelError("UserSkillsPut", response.Message);
                 }
                 return BadRequest(new CommandResponse(false, string.Join("|", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))));
             }
             catch (Exception exception)
             {
-                _logger.LogError("SkillsPut Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during SkillsPut.")); 
+                _logger.LogError("UserSkillsPut Exception: " + exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UserSkillsPut.")); 
             }
         }
 
-        // DELETE: api/Skills/5
+        // DELETE: api/UserSkills/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var response = await _mediator.Send(new SkillDeleteRequest() { Id = id });
+                var response = await _mediator.Send(new UserSkillDeleteRequest() { Id = id });
                 if (response.IsSuccessful)
                 {
                     //return NoContent();
                     return Ok(response);
                 }
-                ModelState.AddModelError("SkillsDelete", response.Message);
+                ModelState.AddModelError("UserSkillsDelete", response.Message);
                 return BadRequest(new CommandResponse(false, string.Join("|", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))));
             }
             catch (Exception exception)
             {
-                _logger.LogError("SkillsDelete Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during SkillsDelete.")); 
+                _logger.LogError("UserSkillsDelete Exception: " + exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UserSkillsDelete.")); 
             }
         }
 	}

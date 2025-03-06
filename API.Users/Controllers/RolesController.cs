@@ -1,24 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using APP.Users.Features.Roles;
-using CORE.APP.Features;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿#nullable disable
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using MediatR;
+using CORE.APP.Features;
+using APP.Users.Features.Roles;
 
-
+//Generated from Custom Template.
 namespace API.Users.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
     public class RolesController : ControllerBase
     {
         private readonly ILogger<RolesController> _logger;
@@ -31,7 +22,7 @@ namespace API.Users.Controllers
         }
 
         // GET: api/Roles
-        [HttpGet, AllowAnonymous]
+        [HttpGet]
         public async Task<IActionResult> Get()
         {
             try
@@ -45,12 +36,12 @@ namespace API.Users.Controllers
             catch (Exception exception)
             {
                 _logger.LogError("RolesGet Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during RolesGet."));
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during RolesGet.")); 
             }
         }
 
         // GET: api/Roles/5
-        [HttpGet("{id}"), AllowAnonymous]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -64,11 +55,11 @@ namespace API.Users.Controllers
             catch (Exception exception)
             {
                 _logger.LogError("RolesGetById Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during RolesGetById."));
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during RolesGetById.")); 
             }
         }
 
-        // POST: api/Roles
+		// POST: api/Roles
         [HttpPost]
         public async Task<IActionResult> Post(RoleCreateRequest request)
         {
@@ -89,7 +80,7 @@ namespace API.Users.Controllers
             catch (Exception exception)
             {
                 _logger.LogError("RolesPost Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during RolesPost."));
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during RolesPost.")); 
             }
         }
 
@@ -114,7 +105,7 @@ namespace API.Users.Controllers
             catch (Exception exception)
             {
                 _logger.LogError("RolesPut Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during RolesPut."));
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during RolesPut.")); 
             }
         }
 
@@ -136,8 +127,8 @@ namespace API.Users.Controllers
             catch (Exception exception)
             {
                 _logger.LogError("RolesDelete Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during RolesDelete."));
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during RolesDelete.")); 
             }
         }
-    }
+	}
 }

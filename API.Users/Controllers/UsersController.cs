@@ -1,19 +1,15 @@
 ﻿#nullable disable
-using APP.Users.Features.Users;
-using CORE.APP.Features;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System.Security.Claims;
+using MediatR;
+using CORE.APP.Features;
+using APP.Users.Features.Users;
 
+//Generated from Custom Template.
 namespace API.Users.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
     public class UsersController : ControllerBase
     {
         private readonly ILogger<UsersController> _logger;
@@ -40,7 +36,7 @@ namespace API.Users.Controllers
             catch (Exception exception)
             {
                 _logger.LogError("UsersGet Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersGet."));
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersGet.")); 
             }
         }
 
@@ -59,11 +55,11 @@ namespace API.Users.Controllers
             catch (Exception exception)
             {
                 _logger.LogError("UsersGetById Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersGetById."));
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersGetById.")); 
             }
         }
 
-        // POST: api/Users
+		// POST: api/Users
         [HttpPost]
         public async Task<IActionResult> Post(UserCreateRequest request)
         {
@@ -84,7 +80,7 @@ namespace API.Users.Controllers
             catch (Exception exception)
             {
                 _logger.LogError("UsersPost Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersPost."));
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersPost.")); 
             }
         }
 
@@ -109,7 +105,7 @@ namespace API.Users.Controllers
             catch (Exception exception)
             {
                 _logger.LogError("UsersPut Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersPut."));
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersPut.")); 
             }
         }
 
@@ -131,53 +127,8 @@ namespace API.Users.Controllers
             catch (Exception exception)
             {
                 _logger.LogError("UsersDelete Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersDelete."));
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersDelete.")); 
             }
         }
-
-        // POST: api/Token
-        [HttpPost, Route("~/api/[action]"), AllowAnonymous]
-        public async Task<IActionResult> Token(TokenCreateRequest request)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    var response = await _mediator.Send(request);
-                    if (response.IsSuccessful)
-                        return Ok(response);
-                    ModelState.AddModelError("UsersToken", response.Message);
-                }
-                return BadRequest(new CommandResponse(false, string.Join("|", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))));
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError("UsersToken Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersToken."));
-            }
-        }
-
-        // GET: api/Authorize
-        [HttpGet]
-        [Route("~/api/[action]")]
-        [AllowAnonymous]
-        public IActionResult Authorize()
-        {
-            var isAuthenticated = User.Identity.IsAuthenticated;
-            if (isAuthenticated)
-            {
-                var userName = User.Identity.Name;
-                var isAdmin = User.IsInRole("Admin");
-                var role = User.Claims.SingleOrDefault(c => c.Type == ClaimTypes.Role).Value;
-                var id = User.Claims.SingleOrDefault(c => c.Type == "Id").Value;
-                var message = "User authenticated. " +
-                    "User Name: " + userName + ", " +
-                    "Is Admin?: " + (isAdmin ? "Yes" : "No") + ", " +
-                    "Role: " + role + ", " +
-                    "Id: " + id;
-                return Ok(new CommandResponse(true, message));
-            }
-            return BadRequest(new CommandResponse(false, "User not authenticated!"));
-        }
-    }
+	}
 }

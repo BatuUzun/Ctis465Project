@@ -13,6 +13,8 @@ namespace APP.Users.Features.Users
 {
     public class UserQueryRequest : Request, IRequest<IQueryable<UserQueryResponse>>
     {
+        public string StartsWith { get; set; } // Optional filtering parameter
+
     }
 
     public class UserQueryResponse : QueryResponse
@@ -40,8 +42,23 @@ namespace APP.Users.Features.Users
 
         public Task<IQueryable<UserQueryResponse>> Handle(UserQueryRequest request, CancellationToken cancellationToken)
         {
-            var query = _db.Users.Include(u => u.Role).Include(u => u.UserSkills).ThenInclude(us => us.Skill)
-                .OrderBy(u => u.Name).Select(u => new UserQueryResponse()
+            var users = _db.Users
+                .Include(u => u.Role)
+                .Include(u => u.UserSkills).ThenInclude(us => us.Skill)
+                .AsQueryable();
+
+            // 🔍 Filtering logic added (without changing structure)
+            if (!string.IsNullOrWhiteSpace(request.StartsWith))
+            {
+                var keyword = request.StartsWith.ToLower();
+                users = users.Where(u =>
+                    u.Name.ToLower().StartsWith(keyword) ||
+                    u.UserName.ToLower().StartsWith(keyword));
+            }
+
+            var query = users
+                .OrderBy(u => u.Name)
+                .Select(u => new UserQueryResponse()
                 {
                     Id = u.Id,
                     Name = u.Name,
@@ -62,7 +79,9 @@ namespace APP.Users.Features.Users
                         Name = us.Skill.Name
                     }).ToList()
                 });
+
             return Task.FromResult(query);
         }
     }
+
 }

@@ -3,31 +3,31 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 using CORE.APP.Features;
-using APP.Users.Features.Users;
+using APP.Hospital.Features.Branches;
 
 //Generated from Custom Template.
-namespace API.Users.Controllers
+namespace API.Hospital.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class BranchesController : ControllerBase
     {
-        private readonly ILogger<UsersController> _logger;
+        private readonly ILogger<BranchesController> _logger;
         private readonly IMediator _mediator;
 
-        public UsersController(ILogger<UsersController> logger, IMediator mediator)
+        public BranchesController(ILogger<BranchesController> logger, IMediator mediator)
         {
             _logger = logger;
             _mediator = mediator;
         }
 
-        // GET: api/Users
+        // GET: api/Branches
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             try
             {
-                var response = await _mediator.Send(new UserQueryRequest());
+                var response = await _mediator.Send(new BranchQueryRequest());
                 var list = await response.ToListAsync();
                 if (list.Any())
                     return Ok(list);
@@ -35,18 +35,18 @@ namespace API.Users.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError("UsersGet Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersGet.")); 
+                _logger.LogError("BranchesGet Exception: " + exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during BranchesGet.")); 
             }
         }
 
-        // GET: api/Users/5
+        // GET: api/Branches/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var response = await _mediator.Send(new UserQueryRequest());
+                var response = await _mediator.Send(new BranchQueryRequest());
                 var item = await response.SingleOrDefaultAsync(r => r.Id == id);
                 if (item is not null)
                     return Ok(item);
@@ -54,14 +54,14 @@ namespace API.Users.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogError("UsersGetById Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersGetById.")); 
+                _logger.LogError("BranchesGetById Exception: " + exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during BranchesGetById.")); 
             }
         }
 
-		// POST: api/Users
+		// POST: api/Branches
         [HttpPost]
-        public async Task<IActionResult> Post(UserCreateRequest request)
+        public async Task<IActionResult> Post(BranchCreateRequest request)
         {
             try
             {
@@ -73,20 +73,20 @@ namespace API.Users.Controllers
                         //return CreatedAtAction(nameof(Get), new { id = response.Id }, response);
                         return Ok(response);
                     }
-                    ModelState.AddModelError("UsersPost", response.Message);
+                    ModelState.AddModelError("BranchesPost", response.Message);
                 }
                 return BadRequest(new CommandResponse(false, string.Join("|", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))));
             }
             catch (Exception exception)
             {
-                _logger.LogError("UsersPost Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersPost.")); 
+                _logger.LogError("BranchesPost Exception: " + exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during BranchesPost.")); 
             }
         }
 
-        // PUT: api/Users
+        // PUT: api/Branches
         [HttpPut]
-        public async Task<IActionResult> Put(UserUpdateRequest request)
+        public async Task<IActionResult> Put(BranchUpdateRequest request)
         {
             try
             {
@@ -98,57 +98,37 @@ namespace API.Users.Controllers
                         //return NoContent();
                         return Ok(response);
                     }
-                    ModelState.AddModelError("UsersPut", response.Message);
+                    ModelState.AddModelError("BranchesPut", response.Message);
                 }
                 return BadRequest(new CommandResponse(false, string.Join("|", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))));
             }
             catch (Exception exception)
             {
-                _logger.LogError("UsersPut Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersPut.")); 
+                _logger.LogError("BranchesPut Exception: " + exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during BranchesPut.")); 
             }
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Branches/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var response = await _mediator.Send(new UserDeleteRequest() { Id = id });
+                var response = await _mediator.Send(new BranchDeleteRequest() { Id = id });
                 if (response.IsSuccessful)
                 {
                     //return NoContent();
                     return Ok(response);
                 }
-                ModelState.AddModelError("UsersDelete", response.Message);
+                ModelState.AddModelError("BranchesDelete", response.Message);
                 return BadRequest(new CommandResponse(false, string.Join("|", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))));
             }
             catch (Exception exception)
             {
-                _logger.LogError("UsersDelete Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during UsersDelete.")); 
+                _logger.LogError("BranchesDelete Exception: " + exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occured during BranchesDelete.")); 
             }
         }
-
-        // GET: api/Users/filter/{text}
-        [HttpGet("filter/{text}")]
-        public async Task<IActionResult> FilterByStart(string text)
-        {
-            try
-            {
-                var response = await _mediator.Send(new UserQueryRequest { StartsWith = text });
-                var list = await response.ToListAsync();
-                if (list.Any())
-                    return Ok(list);
-                return NoContent();
-            }
-            catch (Exception exception)
-            {
-                _logger.LogError("UsersFilterByStart Exception: " + exception.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new CommandResponse(false, "An exception occurred during UsersFilterByStart."));
-            }
-        }
-
-    }
+	}
 }

@@ -4,12 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using MediatR;
 using CORE.APP.Features;
 using APP.Hospital.Features.Doctors;
+using Microsoft.AspNetCore.Authorization;
 
 //Generated from Custom Template.
 namespace API.Hospital.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class DoctorsController : ControllerBase
     {
         private readonly ILogger<DoctorsController> _logger;
